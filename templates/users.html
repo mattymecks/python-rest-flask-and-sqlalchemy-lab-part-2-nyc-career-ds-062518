@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <ol>
+      {% for user in user_list %}
+      <li>
+        <h3>Username: {{user.username}}</h3>
+        <h4>ID: {{user.id}}</h4>
+        <h4>Tweet Count: {{user.tweets|length}}</h4>
+      </li>
+      {% endfor %}
+    </ol>
+  </body>
+</html>

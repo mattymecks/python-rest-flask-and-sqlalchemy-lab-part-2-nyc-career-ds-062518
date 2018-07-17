@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h3>Username: {{user.username}}</h3>
+      <p>ID: {{user.id}}</p>
+    <h4>Tweets:</h4>
+      <ul>
+        {% for tweet in tweets %}
+        <li>User ID: {{tweet.user_id}}</li>
+        <p>Content: {{tweet.text}}</p>
+        {% endfor %}
+      </ul>
+  </body>
+</html>

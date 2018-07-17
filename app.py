@@ -36,9 +36,61 @@ class Tweet(db.Model):
 # DEFINE ROUTES THAT RETURN APPROPRIATE HTML TEMPLATES HERE
 
 
+#User Routes
+
+@app.route('/users')
+def users():
+    user_list = User.query.all()
+    return render_template('users.html', user_list=user_list)
 
 
+@app.route('/users/<int:id>')
+def users_by_id(id):
+    user = User.query.get(id)
+    tweets = user.to_dict()['tweets']
+    return render_template('user_show.html', user=user, tweets=tweets)
 
+#possible that this doesn't work
+@app.route('/users/<username>')
+def users_by_username(username):
+    user = User.query.filter(User.username.ilike(username)).first()
+    tweets = user.to_dict()['tweets']
+    return render_template('user_show.html', user=user, tweets=tweets)
+
+# Tweet Routes
+
+@app.route('/tweets')
+def tweets():
+    tweet_list = Tweet.query.all()
+    return render_template('tweets.html', tweet_list=tweet_list)
+
+@app.route('/tweets/<int:id>')
+def tweets_by_id(id):
+    tweet = Tweet.query.get(id)
+    return render_template('tweet_show.html', tweet=tweet)
+
+
+#NOT YET OPTIMIZED FOR THIS LAB
+
+# Nested Routes
+
+@app.route('/users/<int:id>/tweets')
+def tweets_by_user_id(id):
+    tweet_list = Tweet.query.filter(Tweet.user_id == id).all()
+    return render_template('tweets.html', tweet_list=tweet_list)
+
+@app.route('/users/<username>/tweets')
+def tweets_by_username(username):
+    user = User.query.filter(User.username.ilike(username)).first()
+    tweet_list = Tweet.query.filter(Tweet.user_id == user.id).all()
+    return render_template('tweets.html', tweet_list=tweet_list)
+
+@app.route('/tweets/<int:id>/user')
+def user_by_tweet_id(id):
+    tweet_key = Tweet.query.get(id)
+    user = [user for user in User.query.all() if tweet_key in user.tweets]
+    tweets = user[0].tweets
+    return render_template('user_show.html', user=user[0], tweets=tweets)
 
 
 # run flask application
